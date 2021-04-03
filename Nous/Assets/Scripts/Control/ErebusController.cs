@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
-using UnityEngineInternal;
 
 namespace Game.Control
 {
@@ -10,6 +8,8 @@ namespace Game.Control
         public static readonly string Name = "Erebus";
         [field: SerializeField] public override float Damage { get; set; }
         
+        [Header("Ability")]
+        [SerializeField] private GameObject _abilityParticleSystem = null;
         [SerializeField] private float _abilityCooldown = 2f;
         private float _nextTimeToUseAbility = 0f;
 
@@ -55,24 +55,39 @@ namespace Game.Control
             {
                 // TODO:
                 // Play Error sound
-                yield return null;
+                yield break;
             }
-            
-            ChangeCharacterVisibility(false);
+
+            this.Rigidbody.bodyType = RigidbodyType2D.Static;
+            _collider.isTrigger = true;
+            StartCoroutine(Shake(0.3f));
+            yield return new WaitForSeconds(0.3f);
+
+            this.SpriteRenderer.enabled = false;
+            Destroy(Instantiate(_abilityParticleSystem, this.Transform.position, Quaternion.identity), 10f);
 
             yield return new WaitForSeconds(0.2f);
 
-            ChangeCharacterVisibility(true);
-
+            this.Rigidbody.bodyType = RigidbodyType2D.Dynamic;
+            _collider.isTrigger = false;
+            this.SpriteRenderer.enabled = true;
+            
             _nextTimeToUseAbility = Time.time + _abilityCooldown;
             this.Transform.position = teleportPos;
         }
 
-        private void ChangeCharacterVisibility(bool isVisible)
+        private IEnumerator Shake(float time)
         {
-            this.Rigidbody.isKinematic = !isVisible;
-            _collider.isTrigger = !isVisible;
-            this.SpriteRenderer.enabled = isVisible;
+            float elapsed = 0f;
+            while (elapsed < time)
+            {
+                float randomX = Random.Range(-0.15f, 0.15f);
+                float randomY = Random.Range(-0.08f, 0.08f);
+                this.Transform.position += new Vector3(randomX, randomY, 0);
+                
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
         }
     }
 }

@@ -20,6 +20,9 @@ MonoBehaviour:
     m_Bits: 256
   GroundCheck: {fileID: 177631749156688197}
   <Damage>k__BackingField: 15
+  _abilityParticleSystem: {fileID: 6328003909501860491, guid: 0dc6394f982e3814a9cd4ab94963e013,
+    type: 3}
+  _abilityCooldown: 2
 --- !u!1001 &980485705165602715
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30,7 +33,7 @@ PrefabInstance:
     - target: {fileID: 1147417005540734210, guid: 8adf292b9ede7494988973f5a383f8b0,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 1147417005540734210, guid: 8adf292b9ede7494988973f5a383f8b0,
         type: 3}
@@ -45,17 +48,17 @@ PrefabInstance:
     - target: {fileID: 1147417005540734210, guid: 8adf292b9ede7494988973f5a383f8b0,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1147417005540734210, guid: 8adf292b9ede7494988973f5a383f8b0,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1147417005540734210, guid: 8adf292b9ede7494988973f5a383f8b0,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1147417005540734210, guid: 8adf292b9ede7494988973f5a383f8b0,
         type: 3}
