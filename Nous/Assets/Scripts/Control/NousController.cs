@@ -41,6 +41,11 @@ namespace Game.Control
 
         private void ReduceHealth()
         {
+            if (CurrentController == null)
+            {
+                return;
+            }
+            
             this._health -= CurrentController.Damage * Time.deltaTime;
             if (this._health <= 0)
             {

@@ -136,6 +136,13 @@ namespace Game.Control
 
         private void UpdateAnimator()
         {
+            bool isPlayerMoving = InputX == 0;
+            this.Animator.SetBool(_animatorIdleId, isPlayerMoving);
+            if (isPlayerMoving)
+            {
+                return;
+            }
+
             this.Animator.SetBool(_animatorRunId, Mathf.Abs(InputX) > 0);
         }
 
@@ -173,27 +180,28 @@ namespace Game.Control
             {
                 return;
             }
-            
+
             var dir = this.Rigidbody.velocity.x > 0 ? new Vector2(1, 0) : new Vector2(-1, 0);
             for (int i = -1; i < 2; i++)
             {
                 var offset = new Vector2(0, i * (_raycastDistance - 0.09f));
-                
+
                 var raycastHits = new RaycastHit2D[2];
-                var size = Physics2D.RaycastNonAlloc((Vector2) this.Transform.position + offset, dir, raycastHits, _raycastDistance);
-                
+                var size = Physics2D.RaycastNonAlloc((Vector2) this.Transform.position + offset, dir, raycastHits,
+                    _raycastDistance);
+
                 if (size <= 0)
                 {
                     continue;
                 }
-            
+
                 foreach (var hit in raycastHits)
                 {
                     if (!hit || !hit.transform.TryGetComponent(out Controller controller) || controller == this)
                     {
                         continue;
                     }
-                    
+
                     if (controller == this)
                     {
                         continue;

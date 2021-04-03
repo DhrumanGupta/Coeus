@@ -51,7 +51,7 @@ namespace Game.Control
             teleportPos.z = 0;
             
             // Check if there is something around the area
-            if (Physics2D.OverlapCircle(teleportPos, 1.2f))
+            if (Physics2D.OverlapCircle(teleportPos, 1f))
             {
                 // TODO:
                 // Play Error sound
@@ -64,7 +64,7 @@ namespace Game.Control
             yield return new WaitForSeconds(0.3f);
 
             this.SpriteRenderer.enabled = false;
-            Destroy(Instantiate(_abilityParticleSystem, this.Transform.position, Quaternion.identity), 10f);
+            Destroy(Instantiate(_abilityParticleSystem, this.Transform.position, Quaternion.identity), 2f);
 
             yield return new WaitForSeconds(0.2f);
 
