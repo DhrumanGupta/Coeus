@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Management.Instrumentation;
 using System.Runtime.Remoting.Messaging;
 using UnityEngine;
@@ -17,11 +18,11 @@ namespace Game.Control
         protected SpriteRenderer SpriteRenderer;
         protected Animator Animator;
         protected Camera Camera;
-        public Transform Transform { get; set; }
-
-        protected static Controller CurrentController;
 
         protected float InputX;
+
+        protected static Controller CurrentController;
+        protected bool IsBeingControlled { get; set; }
 
         [Header("Movement")] [SerializeField] protected float MoveSpeed;
         [SerializeField] protected float JumpForce;
@@ -41,17 +42,28 @@ namespace Game.Control
         private int _animatorJumpId;
         private int _animatorControlId;
 
-        #endregion
-
         private float _raycastDistance;
 
-        protected bool IsBeingControlled { get; set; }
+        #endregion
+
         public abstract float Damage { get; set; }
+        public static List<Controller> Controllers { get; private set; }
+        public Transform Transform { get; private set; }
 
         #region Unity Events
 
         protected virtual void Awake()
         {
+            if (Controllers == null)
+            {
+                Controllers = new List<Controller>();
+            }
+
+            if (!Controllers.Contains(this))
+            {
+                Controllers.Add(this);
+                print(Controllers.Count);
+            }
             this.Camera = Camera.main;
             this.Rigidbody = GetComponent<Rigidbody2D>();
             this.SpriteRenderer = GetComponent<SpriteRenderer>();
