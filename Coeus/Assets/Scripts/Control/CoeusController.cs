@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace Game.Control
 {
-    public class NousController : Controller
+    public class CoeusController : Controller
     {
-        public static readonly string Name = "Nous";
+        public static readonly string Name = "Coeus";
         public static event Action<float> OnHealthChanged;
         
         [field: SerializeField] public override float Damage { get; set; }
@@ -21,8 +21,7 @@ namespace Game.Control
         {
             base.Awake();
             this._health = _maxHealth;
-            this.IsBeingControlled = true;
-            CurrentController = this;
+            ChangeControl(this);
         }
 
         private new void Update()

@@ -25,7 +25,7 @@ namespace Game.UI
 
         private void Awake()
         {
-            NousController.OnHealthChanged += OnPlayerHealthChanged;
+            CoeusController.OnHealthChanged += OnPlayerHealthChanged;
             _completedValues = new List<float>();
             _characterLinesByHealth = new Dictionary<float, string>()
             {
@@ -42,7 +42,7 @@ namespace Game.UI
 
         private void OnDestroy()
         {
-            NousController.OnHealthChanged -= OnPlayerHealthChanged;
+            CoeusController.OnHealthChanged -= OnPlayerHealthChanged;
         }
 
         private void OnPlayerHealthChanged(float health)

@@ -62,8 +62,8 @@ namespace Game.Control
             if (!Controllers.Contains(this))
             {
                 Controllers.Add(this);
-                print(Controllers.Count);
             }
+
             this.Camera = Camera.main;
             this.Rigidbody = GetComponent<Rigidbody2D>();
             this.SpriteRenderer = GetComponent<SpriteRenderer>();
@@ -74,7 +74,7 @@ namespace Game.Control
             _animatorIdleId = Animator.StringToHash("isIdle");
             _animatorJumpId = Animator.StringToHash("jump");
             _animatorControlId = Animator.StringToHash("isBeingControlled");
-            
+
             _raycastDistance = (this.SpriteRenderer.bounds.size.x / 2f) + 0.1f;
         }
 
@@ -103,10 +103,7 @@ namespace Game.Control
 
         private void CheckControl()
         {
-            if (!Input.GetMouseButtonDown(0))
-            {
-                return;
-            }
+            if (!Input.GetMouseButtonDown(0)) return;
 
             var pos = this.Camera.ScreenToWorldPoint(Input.mousePosition);
             var colliders = Physics2D.OverlapCircleAll(pos, 0.1f);
@@ -130,16 +127,11 @@ namespace Game.Control
                 return;
             }
 
-            if (toControl == this)
-            {
-                return;
-            }
-            
+            this.RemoveControl();
+
             toControl.Animator.SetBool(_animatorControlId, true);
             toControl.IsBeingControlled = true;
             CurrentController = toControl;
-
-            this.RemoveControl();
         }
 
         private void RemoveControl()
@@ -151,7 +143,8 @@ namespace Game.Control
 
         private void FlipSpriteBasedOnDirection()
         {
-            this.SpriteRenderer.flipX = this.InputX < 0;
+            if (InputX == 0) return;
+            this.SpriteRenderer.flipX = this.InputX > 0;
         }
 
         private void UpdateAnimator()
@@ -163,7 +156,7 @@ namespace Game.Control
                 return;
             }
 
-            this.Animator.SetBool(_animatorRunId, Mathf.Abs(InputX) > 0);
+            this.Animator.SetBool(_animatorRunId, Mathf.Abs(InputX) > 0.1f);
         }
 
         private void CheckIfGrounded()
@@ -200,11 +193,15 @@ namespace Game.Control
             {
                 return;
             }
-
+            
             var dir = this.Rigidbody.velocity.x > 0 ? new Vector2(1, 0) : new Vector2(-1, 0);
+
+            var raycastYOffset = this.SpriteRenderer.bounds.size.y / 2f - 0.01f;
+            
             for (int i = -1; i < 2; i++)
             {
-                var offset = new Vector2(0, i * (_raycastDistance - 0.09f));
+                
+                var offset = new Vector2(0, i * raycastYOffset);
 
                 var raycastHits = new RaycastHit2D[2];
                 var size = Physics2D.RaycastNonAlloc((Vector2) this.Transform.position + offset, dir, raycastHits,
