@@ -39,6 +39,7 @@ namespace Game.Control
         private int _animatorRunId;
         private int _animatorIdleId;
         private int _animatorJumpId;
+        private int _animatorControlId;
 
         #endregion
 
@@ -57,11 +58,12 @@ namespace Game.Control
             this.Animator = GetComponent<Animator>();
             this.Transform = transform;
 
-            this._animatorRunId = Animator.StringToHash("isRunning");
-            this._animatorIdleId = Animator.StringToHash("isIdle");
-            this._animatorJumpId = Animator.StringToHash("jump");
-
-            this._raycastDistance = (this.SpriteRenderer.bounds.size.x / 2f) + 0.1f;
+            _animatorRunId = Animator.StringToHash("isRunning");
+            _animatorIdleId = Animator.StringToHash("isIdle");
+            _animatorJumpId = Animator.StringToHash("jump");
+            _animatorControlId = Animator.StringToHash("isBeingControlled");
+            
+            _raycastDistance = (this.SpriteRenderer.bounds.size.x / 2f) + 0.1f;
         }
 
         protected virtual void Update()
@@ -112,8 +114,7 @@ namespace Game.Control
         {
             if (toControl == null)
             {
-                this.InputX = 0;
-                this.IsBeingControlled = false;
+                this.RemoveControl();
                 return;
             }
 
@@ -121,11 +122,18 @@ namespace Game.Control
             {
                 return;
             }
-
+            
+            toControl.Animator.SetBool(_animatorControlId, true);
             toControl.IsBeingControlled = true;
             CurrentController = toControl;
 
+            this.RemoveControl();
+        }
+
+        private void RemoveControl()
+        {
             this.InputX = 0;
+            this.Animator.SetBool(_animatorControlId, false);
             this.IsBeingControlled = false;
         }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ namespace Game.Control
     public class NousController : Controller
     {
         public static readonly string Name = "Nous";
+        public static event Action<float> OnHealthChanged;
         
         [field: SerializeField] public override float Damage { get; set; }
 
@@ -47,6 +49,7 @@ namespace Game.Control
             }
             
             this._health -= CurrentController.Damage * Time.deltaTime;
+            OnHealthChanged?.Invoke(this._health);
             if (this._health <= 0)
             {
                 CurrentController.ChangeControl(null);
