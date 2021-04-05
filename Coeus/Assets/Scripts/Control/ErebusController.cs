@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Game.Control
 {
-    public class ErebusPlayerController : PlayerController
+    public class ErebusController : PlayerController
     {
         public static readonly string Name = "Erebus";
         [field: SerializeField] public override float Damage { get; set; }

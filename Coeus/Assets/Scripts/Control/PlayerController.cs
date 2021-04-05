@@ -78,7 +78,7 @@ namespace Game.Control
             _animatorJumpId = Animator.StringToHash("isJumping");
             _animatorControlId = Animator.StringToHash("isBeingControlled");
 
-            _raycastDistance = (this.SpriteRenderer.bounds.size.x / 2f) + 0.1f;
+            _raycastDistance = (this.SpriteRenderer.bounds.size.x / 2f) + 0.15f;
             
             _isJumpEffectPrefabNotNull = _jumpEffectPrefab != null;
         }
@@ -93,7 +93,7 @@ namespace Game.Control
 
         protected virtual void FixedUpdate()
         {
-            CheckIfGrounded();
+            // CheckIfGrounded();
             Move();
             RaycastForPlayers();
         }
@@ -164,11 +164,6 @@ namespace Game.Control
             this.Animator.SetBool(_animatorRunId, Mathf.Abs(InputX) > 0.1f);
         }
 
-        private void CheckIfGrounded()
-        {
-            this.IsGrounded = Physics2D.OverlapCircle(this.GroundCheck.position, 0.2f, this.GroundLayerMask);
-        }
-
         private void Move()
         {
             var currentVelocity = this.Rigidbody.velocity;
@@ -232,7 +227,20 @@ namespace Game.Control
                     }
 
                     this.Rigidbody.velocity = new Vector2(0, this.Rigidbody.velocity.y);
+                    break;
                 }
+            }
+        }
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (collision.contacts.Length <= 0) return;
+            
+            var contact = collision.contacts[0];
+            if(Vector3.Dot(contact.normal, Vector3.up) > 0.5)
+            {
+                //collision was from below
+                this.IsGrounded = true;
             }
         }
     }

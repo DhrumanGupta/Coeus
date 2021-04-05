@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Game.Control
 {
-    public class CoeusPlayerController : PlayerController
+    public class CoeusController : PlayerController
     {
         public static readonly string Name = "Coeus";
         public static event Action<float> OnHealthChanged;
