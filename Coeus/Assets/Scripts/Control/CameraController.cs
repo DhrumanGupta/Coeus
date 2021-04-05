@@ -24,7 +24,7 @@ namespace Game.Control
             _players = PlayerController.Controllers?.Select(x => x.Transform).ToArray() ?? new Transform[0];
         }
 
-        void Update()
+        private void LateUpdate()
         {
             var bounds = GetBounds();
 
@@ -50,7 +50,7 @@ namespace Game.Control
         
         private Bounds GetBounds()
         {
-            var bounds = new Bounds();
+            var bounds = new Bounds(_players[0].transform.position, Vector3.zero);
             foreach (var target in _players)
             {
                 bounds.Encapsulate(target.transform.position);

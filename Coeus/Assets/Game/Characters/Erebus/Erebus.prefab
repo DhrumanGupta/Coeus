@@ -15,11 +15,9 @@ MonoBehaviour:
   MoveSpeed: 6
   JumpForce: 8
   FrictionForce: 3
-  GroundLayerMask:
-    serializedVersion: 2
-    m_Bits: 256
   GroundCheck: {fileID: 177631749156688197}
-  <Damage>k__BackingField: 15
+  _jumpEffectPrefab: {fileID: 0}
+  <Damage>k__BackingField: 9
   _abilityParticleSystem: {fileID: 6328003909501860491, guid: 0dc6394f982e3814a9cd4ab94963e013,
     type: 3}
   _abilityCooldown: 2
@@ -88,21 +86,26 @@ PrefabInstance:
     - target: {fileID: 1147417005540734211, guid: 8adf292b9ede7494988973f5a383f8b0,
         type: 3}
       propertyPath: m_Color.r
-      value: 0.20208906
+      value: 0.4138699
       objectReference: {fileID: 0}
     - target: {fileID: 1147417005540734211, guid: 8adf292b9ede7494988973f5a383f8b0,
         type: 3}
       propertyPath: m_Color.g
-      value: 0.085172676
+      value: 0.09411712
       objectReference: {fileID: 0}
     - target: {fileID: 1147417005540734211, guid: 8adf292b9ede7494988973f5a383f8b0,
         type: 3}
       propertyPath: m_Color.b
-      value: 0.20754719
+      value: 0.4245283
       objectReference: {fileID: 0}
     - target: {fileID: 1147417005540734213, guid: 8adf292b9ede7494988973f5a383f8b0,
         type: 3}
       propertyPath: m_Name
+      value: Erebus
+      objectReference: {fileID: 0}
+    - target: {fileID: 1147417005540734213, guid: 8adf292b9ede7494988973f5a383f8b0,
+        type: 3}
+      propertyPath: m_TagString
       value: Erebus
       objectReference: {fileID: 0}
     - target: {fileID: 1147417005540734223, guid: 8adf292b9ede7494988973f5a383f8b0,

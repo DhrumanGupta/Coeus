@@ -27,7 +27,6 @@ namespace Game.Control
         [Header("Movement")] [SerializeField] protected float MoveSpeed;
         [SerializeField] protected float JumpForce;
         [SerializeField] protected float FrictionForce;
-        [SerializeField] protected LayerMask GroundLayerMask;
         [SerializeField] protected Transform GroundCheck;
 
         protected bool IsJumping { get; set; }
@@ -53,6 +52,8 @@ namespace Game.Control
         public static List<PlayerController> Controllers { get; private set; }
         public Transform Transform { get; private set; }
 
+        private int _nPlayers = 3;
+
         #region Unity Events
 
         protected virtual void Awake()
@@ -61,11 +62,17 @@ namespace Game.Control
             {
                 Controllers = new List<PlayerController>();
             }
+            
+            if (Controllers.Count >= _nPlayers)
+            {
+                Controllers = new List<PlayerController>();
+            }
 
-            if (!Controllers.Contains(this))
+            if (Controllers.Count < _nPlayers)
             {
                 Controllers.Add(this);
             }
+
 
             this.Camera = Camera.main;
             this.Rigidbody = GetComponent<Rigidbody2D>();
@@ -95,7 +102,7 @@ namespace Game.Control
         {
             // CheckIfGrounded();
             Move();
-            RaycastForPlayers();
+            RaycastForObjects();
         }
 
         #endregion
@@ -181,15 +188,16 @@ namespace Game.Control
             {
                 return;
             }
-            
+
             if (_isJumpEffectPrefabNotNull)
                 Destroy(Instantiate(_jumpEffectPrefab, this.GroundCheck.transform.position, Quaternion.identity), 4f);
             
             this.Rigidbody.AddForce(new Vector2(0, this.JumpForce), ForceMode2D.Impulse);
             this.IsJumping = false;
+            this.IsGrounded = false;
         }
 
-        private void RaycastForPlayers()
+        private void RaycastForObjects()
         {
             if (this.Rigidbody.velocity.x == 0)
             {
@@ -216,10 +224,12 @@ namespace Game.Control
 
                 foreach (var hit in raycastHits)
                 {
-                    if (!hit || !hit.transform.TryGetComponent(out PlayerController controller) || controller == this)
+                    if (!hit || hit.collider.isTrigger)
                     {
                         continue;
                     }
+
+                    hit.transform.TryGetComponent(out PlayerController controller);
 
                     if (controller == this)
                     {

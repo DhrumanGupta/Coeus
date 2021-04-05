@@ -15,10 +15,8 @@ MonoBehaviour:
   MoveSpeed: 10
   JumpForce: 8
   FrictionForce: 4
-  GroundLayerMask:
-    serializedVersion: 2
-    m_Bits: 256
   GroundCheck: {fileID: 2428574813120743104}
+  _jumpEffectPrefab: {fileID: 0}
   <Damage>k__BackingField: 5
 --- !u!1001 &3339549155045107742
 PrefabInstance:
@@ -100,6 +98,11 @@ PrefabInstance:
     - target: {fileID: 1147417005540734213, guid: 8adf292b9ede7494988973f5a383f8b0,
         type: 3}
       propertyPath: m_Name
+      value: Hermes
+      objectReference: {fileID: 0}
+    - target: {fileID: 1147417005540734213, guid: 8adf292b9ede7494988973f5a383f8b0,
+        type: 3}
+      propertyPath: m_TagString
       value: Hermes
       objectReference: {fileID: 0}
     - target: {fileID: 1147417005540734222, guid: 8adf292b9ede7494988973f5a383f8b0,

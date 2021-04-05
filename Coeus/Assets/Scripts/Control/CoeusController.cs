@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Game.Control
 {
@@ -22,6 +23,7 @@ namespace Game.Control
             base.Awake();
             this._health = _maxHealth;
             ChangeControl(this);
+            OnHealthChanged?.Invoke(_maxHealth);
         }
 
         private new void Update()
@@ -49,10 +51,9 @@ namespace Game.Control
             
             this._health -= CurrentPlayerController.Damage * Time.deltaTime;
             OnHealthChanged?.Invoke(this._health);
-            if (this._health <= 0)
-            {
-                CurrentPlayerController.ChangeControl(null);
-            }
+            if (!(this._health <= 0)) return;
+            CurrentPlayerController.ChangeControl(null);
+            SceneManager.LoadScene(1);
         }
     }
 }

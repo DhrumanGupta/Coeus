@@ -1,13 +1,15 @@
 ﻿using System.Collections;
+using Game.Control;
 using Game.Saving;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Game.SceneManagement
 {
     public class SavingWrapper : MonoBehaviour
     {
-        const string defaultSaveFile = "save_file";
-        [SerializeField] float fadeInTime = 1f;
+        private const string _defaultSaveFile = "save_file";
+        [SerializeField] private float fadeInTime = 1f;
         private SavingSystem _savingSystem;
 
         private void Awake()
@@ -19,11 +21,10 @@ namespace Game.SceneManagement
         {
             Fader fader = FindObjectOfType<Fader>();
             fader.FadeOutImediate();
-            yield return _savingSystem.LoadLastScene(defaultSaveFile);
             yield return fader.FadeIn(fadeInTime);
         }
-        
-        #if UNITY_EDITOR
+
+#if UNITY_EDITOR
 
         private void Update()
         {
@@ -31,24 +32,25 @@ namespace Game.SceneManagement
             {
                 Save();
             }
+
             if (Input.GetKeyDown(KeyCode.L))
             {
                 Load();
             }
         }
-        
-        #endif
+
+#endif
 
         public void Save()
         {
             // Call saving system to save
-            _savingSystem.Save(defaultSaveFile);
+            _savingSystem.Save(_defaultSaveFile);
         }
 
         public void Load()
         {
             // Call saving system to load
-            _savingSystem.Load(defaultSaveFile);
+            _savingSystem.Load(_defaultSaveFile);
         }
     }
 }

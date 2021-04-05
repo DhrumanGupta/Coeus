@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Coeus
+  - Players
+  - Erebus
+  - Hermes
   layers:
   - Default
   - TransparentFX
@@ -41,9 +45,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Particles
-    uniqueID: 1211977547
+  - name: Pressure Plate
+    uniqueID: 2999251615
+    locked: 0
+  - name: Platform
+    uniqueID: 1537143631
     locked: 0
   - name: Players
     uniqueID: 454109439
+    locked: 0
+  - name: Particles
+    uniqueID: 1211977547
     locked: 0

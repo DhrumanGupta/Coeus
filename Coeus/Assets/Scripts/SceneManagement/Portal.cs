@@ -20,14 +20,15 @@ namespace Game.SceneManagement
         [SerializeField] float fadeInTime = 1.5f;
         [SerializeField] float fadeWaitTime = .5f;
 
-        private void OnTriggerEnter(Collider other)
+        private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.gameObject.tag == "Player")
+            if (other.CompareTag("Coeus"))
             {
                 StartCoroutine(TransitionToScene());
             }
         }
 
+        // ReSharper disable Unity.PerformanceAnalysis
         private IEnumerator TransitionToScene()
         {
             if (sceneToLoad < 0)
@@ -67,9 +68,8 @@ namespace Game.SceneManagement
 
         private void UpdatePlayer(Portal otherPortal)
         {
-            GameObject player = GameObject.FindWithTag("Player");
-            player.GetComponent<NavMeshAgent>().Warp(otherPortal.spawnPoint.position);
-            player.transform.rotation = otherPortal.spawnPoint.rotation;
+            GameObject player = GameObject.FindWithTag("Players");
+            player.transform.position = otherPortal.spawnPoint.position;
         }
 
         private Portal GetOtherPortal()
