@@ -21,7 +21,7 @@ namespace Game.Control
         private void Start()
         {
             _camera = GetComponent<Camera>();
-            _players = Controller.Controllers.Select(x => x.Transform).ToArray();
+            _players = PlayerController.Controllers.Select(x => x.Transform).ToArray();
         }
 
         void Update()

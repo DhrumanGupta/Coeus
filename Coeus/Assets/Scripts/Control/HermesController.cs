@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Game.Control
 {
-    public class HermesController : Controller
+    public class HermesPlayerController : PlayerController
     {
         public static readonly string Name = "Hermes";
         [field: SerializeField] public override float Damage { get; set; }

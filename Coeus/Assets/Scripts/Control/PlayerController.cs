@@ -10,7 +10,7 @@ namespace Game.Control
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(BoxCollider2D))]
     [RequireComponent(typeof(SpriteRenderer))]
-    public abstract class Controller : MonoBehaviour
+    public abstract class PlayerController : MonoBehaviour
     {
         #region Protected Variables
 
@@ -21,7 +21,7 @@ namespace Game.Control
 
         protected float InputX;
 
-        protected static Controller CurrentController;
+        protected static PlayerController CurrentPlayerController;
         protected bool IsBeingControlled { get; set; }
 
         [Header("Movement")] [SerializeField] protected float MoveSpeed;
@@ -44,10 +44,13 @@ namespace Game.Control
 
         private float _raycastDistance;
 
+        [SerializeField] private GameObject _jumpEffectPrefab = null;
+        private bool _isJumpEffectPrefabNotNull;
+
         #endregion
 
         public abstract float Damage { get; set; }
-        public static List<Controller> Controllers { get; private set; }
+        public static List<PlayerController> Controllers { get; private set; }
         public Transform Transform { get; private set; }
 
         #region Unity Events
@@ -56,7 +59,7 @@ namespace Game.Control
         {
             if (Controllers == null)
             {
-                Controllers = new List<Controller>();
+                Controllers = new List<PlayerController>();
             }
 
             if (!Controllers.Contains(this))
@@ -72,10 +75,12 @@ namespace Game.Control
 
             _animatorRunId = Animator.StringToHash("isRunning");
             _animatorIdleId = Animator.StringToHash("isIdle");
-            _animatorJumpId = Animator.StringToHash("jump");
+            _animatorJumpId = Animator.StringToHash("isJumping");
             _animatorControlId = Animator.StringToHash("isBeingControlled");
 
             _raycastDistance = (this.SpriteRenderer.bounds.size.x / 2f) + 0.1f;
+            
+            _isJumpEffectPrefabNotNull = _jumpEffectPrefab != null;
         }
 
         protected virtual void Update()
@@ -110,7 +115,7 @@ namespace Game.Control
 
             foreach (var collider in colliders)
             {
-                if (!collider.TryGetComponent(out Controller controller))
+                if (!collider.TryGetComponent(out PlayerController controller))
                 {
                     continue;
                 }
@@ -119,7 +124,7 @@ namespace Game.Control
             }
         }
 
-        public void ChangeControl(Controller toControl)
+        public void ChangeControl(PlayerController toControl)
         {
             if (toControl == null)
             {
@@ -131,7 +136,7 @@ namespace Game.Control
 
             toControl.Animator.SetBool(_animatorControlId, true);
             toControl.IsBeingControlled = true;
-            CurrentController = toControl;
+            CurrentPlayerController = toControl;
         }
 
         private void RemoveControl()
@@ -181,10 +186,12 @@ namespace Game.Control
             {
                 return;
             }
-
+            
+            if (_isJumpEffectPrefabNotNull)
+                Destroy(Instantiate(_jumpEffectPrefab, this.GroundCheck.transform.position, Quaternion.identity), 4f);
+            
             this.Rigidbody.AddForce(new Vector2(0, this.JumpForce), ForceMode2D.Impulse);
             this.IsJumping = false;
-            this.Animator.SetTrigger(_animatorJumpId);
         }
 
         private void RaycastForPlayers()
@@ -214,7 +221,7 @@ namespace Game.Control
 
                 foreach (var hit in raycastHits)
                 {
-                    if (!hit || !hit.transform.TryGetComponent(out Controller controller) || controller == this)
+                    if (!hit || !hit.transform.TryGetComponent(out PlayerController controller) || controller == this)
                     {
                         continue;
                     }

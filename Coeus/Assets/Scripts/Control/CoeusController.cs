@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Game.Control
 {
-    public class CoeusController : Controller
+    public class CoeusPlayerController : PlayerController
     {
         public static readonly string Name = "Coeus";
         public static event Action<float> OnHealthChanged;
@@ -42,16 +42,16 @@ namespace Game.Control
 
         private void ReduceHealth()
         {
-            if (CurrentController == null)
+            if (CurrentPlayerController == null)
             {
                 return;
             }
             
-            this._health -= CurrentController.Damage * Time.deltaTime;
+            this._health -= CurrentPlayerController.Damage * Time.deltaTime;
             OnHealthChanged?.Invoke(this._health);
             if (this._health <= 0)
             {
-                CurrentController.ChangeControl(null);
+                CurrentPlayerController.ChangeControl(null);
             }
         }
     }
