@@ -13,7 +13,7 @@ According to all playtesters, the game feels responsive the controls are intuiti
 ### Replayable
 The game can be replayed as many times
 
-## Possible Features (game is not in further development)
+## Possible Features (game is not in further development as of now)
 ### Characters
 Characters with different abilities, powers and damage to be added
 ### Levels
